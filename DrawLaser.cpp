@@ -1,11 +1,11 @@
 /**
- * @file DrawTarget.cpp
+ * @file DrawLaser.cpp
  * @ingroup Kinect
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
  * @copyright All right reserved.
  */
 
-#include "DrawTelemeter.h"
+#include "DrawLaser.h"
 
 #include "DrawingTools.h"
 #include "Json/json_spirit.h"
@@ -17,7 +17,7 @@ using namespace cv;
 using namespace MobileRGBD;
 
 /**
- * @class TelemeterInfo DrawTelemeterData.cpp
+ * @class TelemeterInfo DrawLaserData.cpp
  * @brief Unserialize JSON Data from laser timestamp file
  *
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
@@ -49,7 +49,7 @@ public:
  * @param RequestTimestamp [in] The timestamp of the data.
  * @param UserData [in] User pointer to working data. Here a pointer to a cv:Mat to draw in.
  */
-bool DrawTelemeterData::ProcessElement( const TimeB &RequestTimestamp, void * UserData )
+bool DrawLaserData::ProcessElement( const TimeB &RequestTimestamp, void * UserData )
 {
 	cv::Mat& WhereToDraw = *((cv::Mat*)UserData);
 

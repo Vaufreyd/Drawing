@@ -1,5 +1,5 @@
 /**
- * @file DrawTelemter.h
+ * @file DrawLaser.h
  * @ingroup Drawing
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
  * @copyright All right reserved.
@@ -16,22 +16,22 @@
 namespace MobileRGBD {
 
 /**
- * @class DrawTelemeterData DrawTelemeterData.cpp DrawTelemeterData.h
+ * @class DrawLaserData DrawLaser.cpp DrawLaser.h
  * @brief Class to draw laser range finder around the robot.
  *
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
  */
-class DrawTelemeterData : public DrawTimestampData
+class DrawLaserData : public DrawTimestampData
 {
 public:
 	/** @brief constructor. Draw the telemeter in the image. Default drawing mode is PointToLine.
 	 */
-	DrawTelemeterData() : DrawTimestampData("") {CurrentDrawingMode = PointToLine;}
+	DrawLaserData() : DrawTimestampData("") {CurrentDrawingMode = PointToLine;}
 
 	/** @brief constructor. Draw the telemeter in the image. Default drawing mode is PointToLine.
 	 * @param Folder [in] Main folder containing the data. Body data will be search in 'Folder/robulab/' subfolder.
 	 */
-	DrawTelemeterData( const std::string& Folder )
+	DrawLaserData( const std::string& Folder )
 		: DrawTimestampData( Folder + TelemeterFileName )
 	{
 		CurrentDrawingMode = PointToLine;
@@ -39,7 +39,7 @@ public:
 
 	/** @brief Virtual destructor, always.
 	 */
-	virtual ~DrawTelemeterData() {}
+	virtual ~DrawLaserData() {}
 
 	/** @brief ProcessElement is a callback function called by mother classes when data are ready.
 	 *
