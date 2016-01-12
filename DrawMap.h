@@ -9,7 +9,7 @@
 #define __DRAW_MAP_H__
 
 #include <algorithm>
-#include "../icp_localization/src/GeometricMap.hpp"
+#include <GeometricMap.hpp>
 
 #include "DrawTimestampData.h"
 #include "Drawable.h"
