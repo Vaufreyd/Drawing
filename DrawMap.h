@@ -18,7 +18,7 @@
 // To draw a map, we need to know about localisation
 #include "DrawLocalization.h"
 
-#define MapFileName "/Map.name"	/*!< @brief File contaning the actual filename of the Map. Even if map differs, we will always find inforamtion about map file name here. */
+#define MapFileName "/Recording.map"	/*!< @brief File contaning the actual filename of the Map followed by the list of wall segments. */
 
 namespace MobileRGBD {
 
@@ -41,6 +41,15 @@ public:
 	 */
 	virtual ~DrawMap() {}
 
+	/** @brief Static function to draw a GeometricMap object on a cv::Mat.
+	 *
+	 * @param x x of the drawing position (usually the robot position). This point is at the 2/3 of WhereToDraw.
+	 * @param y y of the drawing position (usually the robot position). This point is at the 1/2 of WhereToDraw.
+	 * @param o Orientation of the drawing position (usually the robot orientation).
+	 * @param Map The map to draw.
+	 * @param WhereToDraw The cv::Map where to draw the map.
+	 */
+	static void SimpleDraw( float x, float y, float o, GeometricMap& Map, cv::Mat& WhereToDraw );
 
 	/** @brief ProcessElement is a callback function called by mother classes when data are ready.
 	 *
