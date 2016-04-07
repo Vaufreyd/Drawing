@@ -10,39 +10,9 @@
 #include "DrawingTools.h"
 #include "Json/json_spirit.h"
 
-#include <System/SimpleList.h>
-#include <Messaging/Serializable.h>
-
 using namespace cv;
 using namespace MobileRGBD;
 
-/**
- * @class TelemeterInfo DrawLaserData.cpp
- * @brief Unserialize JSON Data from laser timestamp file
- *
- * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
- */
-class TelemeterInfo : public Omiscid::Serializable
-{
-public:
-	float FirstAngle;						/*!< First angle of the laser range finder */
-	float LastAngle;						/*!< Last angle of the laser range finder */
-	float Step;								/*!< Step between angles of the laser range finder */
-	int NbEchos;							/*!< Number of laser echos */
-	Omiscid::SimpleList<float> LaserMap;	/*!< NbEchos float values ordered from First angle to last angle */
-
-	/* @brief DeclareSerializeMapping declare association between Values and key string in JSON. Will be used
-		both for serialization and unserialiazation.
-	 */
-	virtual void DeclareSerializeMapping()
-	{
-		AddToSerialization( "FirstAngle", FirstAngle );
-		AddToSerialization( "LastAngle", LastAngle );
-		AddToSerialization( "Step", Step );
-		AddToSerialization( "NbEchos", NbEchos );
-		AddToSerialization( "LaserMap", LaserMap );
-	}
-};
 
 /** @brief ProcessElement is a callback function called by mother classes when data are ready.
  *
@@ -53,7 +23,6 @@ bool DrawLaserData::ProcessElement( const TimeB &RequestTimestamp, void * UserDa
 {
 	cv::Mat& WhereToDraw = *((cv::Mat*)UserData);
 
-	TelemeterInfo LaserData;
 	LaserData.Unserialize(Omiscid::SimpleString(DataBuffer));
 
 // Show Kinect field of view
@@ -78,12 +47,12 @@ bool DrawLaserData::ProcessElement( const TimeB &RequestTimestamp, void * UserDa
 	CurrentAngle = -87.5/2*LaserData.Step;
 	x = X_CoordonateToPixelCentered(10*sin(CurrentAngle), WhereToDraw.cols);
 	y = Y_CoordonateToPixelCentered(-10*cos(CurrentAngle), WhereToDraw.rows);
-	cv::line( WhereToDraw, Origin, Point(x,y) ,CV_RGB(0,255,0), 2 );
+	// cv::line( WhereToDraw, Origin, Point(x,y) ,CV_RGB(0,255,0), 2 );
 
 	CurrentAngle =87.5/2*LaserData.Step;
 	x = X_CoordonateToPixelCentered(10*sin(CurrentAngle), WhereToDraw.cols);
 	y = Y_CoordonateToPixelCentered(-10*cos(CurrentAngle), WhereToDraw.rows);
-	cv::line( WhereToDraw, Origin, Point(x,y) ,CV_RGB(0,255,0), 2 );
+	// cv::line( WhereToDraw, Origin, Point(x,y) ,CV_RGB(0,255,0), 2 );
 #else
 // Draw Kinect
 	double CurrentAngle = FirstAngle + 100*LaserData.Step;
