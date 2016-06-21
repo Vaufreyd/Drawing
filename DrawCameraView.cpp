@@ -51,6 +51,30 @@ bool DrawCameraView::ProcessElement( const TimeB &RequestTimestamp, void * UserD
 
 namespace MobileRGBD { namespace Kinect2 {
 
+/* static */ KinectImageConverter DrawCameraView::ImageConverter;	
+
+/** @brief Static function to draw data from RGB raw Kinect buffer.
+ *
+ */
+void DrawCameraView::Draw( cv::Mat& WhereToDraw, void * FrameBuffer, int ScaleFactor )
+{
+	// convert it to BGR
+	unsigned char * TmpFrame = ImageConverter.ConvertYVY2ToBRG((unsigned char*)FrameBuffer, Kinect2::CamWidth, Kinect2::CamHeight, ScaleFactor );
+	cv::Mat MatForConversion( Kinect2::CamHeight/ScaleFactor, Kinect2::CamWidth/ScaleFactor, CV_8UC3, TmpFrame );
+
+	// Resize it to final size
+	if ( MatForConversion.rows != WhereToDraw.rows || MatForConversion.cols != WhereToDraw.cols )
+	{
+		cv::Mat MatForFinal( WhereToDraw.rows, WhereToDraw.cols, CV_8UC3 );
+		cv::resize( MatForConversion, MatForFinal, cv::Size(WhereToDraw.cols,WhereToDraw.rows), 0, 0 );
+		MatForFinal.copyTo( WhereToDraw );   
+	}
+	else
+	{
+		MatForConversion.copyTo( WhereToDraw );
+	}
+}
+
 /** @brief ProcessElement is a callback function called by mother classes when data are ready.
  *
  * @param RequestTimestamp [in] The timestamp of the data.
@@ -62,21 +86,8 @@ bool DrawCameraView::ProcessElement( const TimeB &RequestTimestamp, void * UserD
 
 	const int ScaleFactor = 2;
 
-	// convert it to BGR
-	unsigned char * TmpFrame = ImageConverter.ConvertYVY2ToBRG((unsigned char*)FrameBuffer, Kinect2::CamWidth, Kinect2::CamHeight, ScaleFactor );
-	cv::Mat MatForConversion( Kinect2::CamHeight/ScaleFactor, Kinect2::CamWidth/ScaleFactor, CV_8UC3, TmpFrame );
-
-	// Resize it to final size
-	if ( MatForConversion.rows != WhereToDraw.rows || MatForConversion.cols != WhereToDraw.cols )
-	{
-		cv::Mat MatForFinal( WhereToDraw.rows, WhereToDraw.cols, CV_8UC3 );
-		cv::resize( MatForConversion, MatForFinal, cv::Size(WhereToDraw.cols,WhereToDraw.rows), 0, 0 );
-		MatForFinal.copyTo( WhereToDraw );
-	}
-	else
-	{
-		MatForConversion.copyTo( WhereToDraw );
-	}
+	// Draw it
+	Draw(WhereToDraw, FrameBuffer, ScaleFactor );
 
 	return true;
 }

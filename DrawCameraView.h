@@ -84,6 +84,11 @@ public:
 	 */
 	~DrawCameraView() {};
 
+	/** @brief Static function to draw data from RGB raw Kinect buffer.
+	 *
+	 */
+	static void Draw( cv::Mat& WhereToDraw, void * FrameBuffer, int ScaleFactor );
+
 	/** @brief ProcessElement is a callback function called by mother classes when data are ready.
 	 *
 	 * @param RequestTimestamp [in] The timestamp of the data.
@@ -92,7 +97,7 @@ public:
 	virtual bool ProcessElement( const TimeB &RequestTimestamp, void * UserData = nullptr );
 
 protected:
-	KinectImageConverter ImageConverter;		/*!< @brief Converter for the Kinect2 raw YVY2 to BRG */
+	static KinectImageConverter ImageConverter;		/*!< @brief Converter for the Kinect2 raw YVY2 to BRG */
 };
 
 }} // namesapce MobileRGBD::Kinect2

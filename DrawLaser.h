@@ -13,38 +13,7 @@
 
 #define TelemeterFileName "/robulab/Laser.timestamp"
 
- #include <Messaging/Serializable.h>
-
 namespace MobileRGBD {
-
-
-/**
- * @class TelemeterInfo DrawLaserData.cpp
- * @brief Unserialize JSON Data from laser timestamp file
- *
- * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
- */
-class TelemeterInfo : public Omiscid::Serializable
-{
-public:
-	float FirstAngle;						/*!< First angle of the laser range finder */
-	float LastAngle;						/*!< Last angle of the laser range finder */
-	float Step;								/*!< Step between angles of the laser range finder */
-	int NbEchos;							/*!< Number of laser echos */
-	Omiscid::SimpleList<float> LaserMap;	/*!< NbEchos float values ordered from First angle to last angle */
-
-	/* @brief DeclareSerializeMapping declare association between Values and key string in JSON. Will be used
-		both for serialization and unserialiazation.
-	 */
-	virtual void DeclareSerializeMapping()
-	{
-		AddToSerialization( "FirstAngle", FirstAngle );
-		AddToSerialization( "LastAngle", LastAngle );
-		AddToSerialization( "Step", Step );
-		AddToSerialization( "NbEchos", NbEchos );
-		AddToSerialization( "LaserMap", LaserMap );
-	}
-};
 
 /**
  * @class DrawLaserData DrawLaser.cpp DrawLaser.h
@@ -72,6 +41,10 @@ public:
 	 */
 	virtual ~DrawLaserData() {}
 
+	/** @brief Static function to draw lidar data in opencv image
+	 */
+	static void Draw(float FirstAngle, float LastAngle, float Step, int NbEchos, Omiscid::SimpleList<float>& LaserMap, cv::Mat& WhereToDraw, int DrawingMode = PointToLine );
+
 	/** @brief ProcessElement is a callback function called by mother classes when data are ready.
 	 *
 	 * @param RequestTimestamp [in] The timestamp of the data.
@@ -84,8 +57,6 @@ public:
 	 */
 	enum { PointToLine = 0, PointCloud = 1 };
 	int CurrentDrawingMode;
-
-	TelemeterInfo LaserData;
 };
 
 } // namespace MobileRGBD

@@ -45,6 +45,11 @@ public:
 		ImageBuffer = new unsigned char[DepthWidth*DepthHeight*3]; // BGR data
 	}
 
+	/** @brief Static function to draw data from RGB raw Kinect buffer.
+	 *
+	 */
+	static void Draw( cv::Mat& WhereToDraw, void * FrameBuffer, void * DrawingBuffer = nullptr );
+
 	/** @brief Virtual destructor, always.
 	 */
 	~DrawDepthView()

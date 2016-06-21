@@ -74,19 +74,29 @@ bool DrawDepthView::ProcessElement( const TimeB &RequestTimestamp, void * UserDa
 
 #ifdef KINECT_2
 
+#include <System/TypedMemoryBuffer.h>
+
 namespace MobileRGBD { namespace Kinect2 {
 
-/** @brief ProcessElement is a callback function called by mother classes when data are ready.
- *
- * @param RequestTimestamp [in] The timestamp of the data.
- * @param UserData [in] User pointer to working data. Here a pointer to a cv:Mat to draw in.
- */
-bool DrawDepthView::ProcessElement( const TimeB &RequestTimestamp, void * UserData /* = nullptr */ )
-{
-	cv::Mat& WhereToDraw = *((cv::Mat*)UserData);
 
+
+void DrawDepthView::Draw( cv::Mat& WhereToDraw, void * FrameBuffer, void * DrawingBuffer /* = nullptr */ )
+{
 	try
 	{
+		Omiscid::TypedMemoryBuffer<unsigned char> TempBuff;
+		unsigned char * ImageBuffer;
+		if ( DrawingBuffer == nullptr )
+		{
+			TempBuff.SetNewNumberOfElementsInBuffer(DepthWidth*DepthHeight*3); // RGB
+			ImageBuffer = TempBuff;
+		}
+		else
+		{
+			ImageBuffer = (unsigned char *)DrawingBuffer;
+		}
+
+
 		unsigned short int * Table = (unsigned short int*)FrameBuffer;
 		int PosBuffer = 0;
 		int PosRef = 0;
@@ -135,9 +145,22 @@ bool DrawDepthView::ProcessElement( const TimeB &RequestTimestamp, void * UserDa
 	} catch (  cv::Exception )
 	{
 	}
+}
 
+/** @brief ProcessElement is a callback function called by mother classes when data are ready.
+ *
+ * @param RequestTimestamp [in] The timestamp of the data.
+ * @param UserData [in] User pointer to working data. Here a pointer to a cv:Mat to draw in.
+ */
+bool DrawDepthView::ProcessElement( const TimeB &RequestTimestamp, void * UserData /* = nullptr */ )
+{
+	cv::Mat& WhereToDraw = *((cv::Mat*)UserData);
+
+	Draw(WhereToDraw, FrameBuffer, ImageBuffer);
+	
 	return true;
 }
+
 
 }} // namespace MobileRGBD::Kinect2
 
