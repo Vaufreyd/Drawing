@@ -1,10 +1,6 @@
 /**
-<<<<<<< HEAD:DrawTelemeter.cpp
  * @file DrawTelemeter.cpp
-=======
- * @file DrawLaser.cpp
->>>>>>> 421a7911d13de48223ff5b88ddc44771c8d15989:DrawLaser.cpp
- * @ingroup Kinect
+ * @ingroup Drawing
  * @author Dominique Vaufreydaz, Grenoble Alpes University, Inria
  * @copyright All right reserved.
  */
@@ -158,7 +154,7 @@ bool DrawLaserData::ProcessElement( const TimeB &RequestTimestamp, void * UserDa
 	TelemeterInfo LaserData;
 	LaserData.Unserialize(Omiscid::SimpleString(DataBuffer));
 
-	Draw(LaserData.FirstAngle, LaserData.LastAngle, LaserData.Step, LaserData.NbEchos, LaserData.LaserMap, WhereToDraw, DrawingMode );
+	Draw(LaserData.FirstAngle, LaserData.LastAngle, LaserData.Step, LaserData.NbEchos, LaserData.LaserMap, WhereToDraw, CurrentDrawingMode );
 
 	return true;
 }
