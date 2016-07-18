@@ -10,6 +10,7 @@
 
 // #include "DrawingTools.h"
 #include "DrawTimestampData.h"
+#include <System/SimpleList.h>
 
 #define TelemeterFileName "/robulab/Laser.timestamp"
 
